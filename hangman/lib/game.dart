@@ -14,15 +14,22 @@ class Game {
     'GITARA',
     'APLIKACJA',
     'LEWANDOWSKI',
-    'MESSI',
-    'RONALDO',
     'PIANINO',
     'MYSZ',
     'ODKURZACZ',
     'LINA',
     'JEZUS',
     'DOMINO',
-    'POZDRAWIAM'
+    'POZDRAWIAM',
+    'KORONA',
+    'ZEGAREK',
+    'KALENDARZ',
+    'KLAWIATURA',
+    'TALERZ',
+    'WIDELEC',
+    'NOTATNIK',
+    'SZAFKA',
+    'KOT'
   ];
   List<String> alfabet = [
     'A',
