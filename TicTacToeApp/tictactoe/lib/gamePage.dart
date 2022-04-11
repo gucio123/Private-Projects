@@ -15,57 +15,62 @@ class _GamePageState extends State<GamePage> {
     return Scaffold(
         body: Center(
       child: Container(
-        height: height * 0.61,
+        height: width,
         color: Colors.white,
         child: GridView.count(
           padding: EdgeInsets.all(5),
           crossAxisCount: 3,
           children: [
             Container(
-              color: Colors.blue,
+              color: Colors.black,
               width: width / 3,
-              child: Card(child: Text("dupa")),
+              child: GestureDetector(
+                  onTap: () {
+                    print("object");
+                  },
+                  child: Card(
+                    child: Text("1"),
+                  )),
+            ),
+            Container(
+              color: Colors.yellow,
+              width: width / 3,
+              child: Card(child: Text("2")),
+            ),
+            Container(
+              color: Colors.black,
+              width: width / 3,
+              child: Card(child: Text("3")),
             ),
             Container(
               color: Colors.red,
               width: width / 3,
-              child: Card(child: Text("dupa")),
+              child: Card(child: Text("4")),
             ),
             Container(
               color: Colors.blue,
               width: width / 3,
-              child: Card(child: Text("dupa")),
-            ),
-            Container(
-              color: Colors.red,
-              width: width / 3,
-              child: Text("dupa"),
-            ),
-            Container(
-              color: Colors.blue,
-              width: width / 3,
-              child: Text("dupa"),
+              child: Card(child: Text("5")),
             ),
             Container(
               color: Colors.red.shade700,
               width: width / 3,
-              child: Text("dupa"),
+              child: Card(child: Text("6")),
             ),
             Container(
               color: Colors.blue,
               width: width / 3,
-              child: Text("dupa"),
+              child: Card(child: Text("7")),
             ),
             Container(
               color: Colors.red,
               width: width / 3,
-              child: Text("dupa"),
+              child: Card(child: Text("8")),
             ),
             Container(
-              color: Colors.blue,
-              width: width / 3,
-              child: Text("dupa"),
-            ),
+                color: Colors.blue,
+                width: width / 3,
+                child: Card(child: Text("9"))),
           ],
         ),
       ),
