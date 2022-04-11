@@ -118,7 +118,7 @@ class _GamePageState extends State<GamePage> {
                 child: Column(
                   children: [
                     game.finalWord == game.word
-                        ? Text("UDAŁO CI SIĘ WYGRAĆ!")
+                        ? Text("Gratulacje, odgadłeś słowo!")
                         : Word.secondConstructor(game.word, game),
                     TextField(
                       textCapitalization: TextCapitalization.characters,

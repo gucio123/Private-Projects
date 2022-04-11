@@ -16,7 +16,7 @@ class HomePage extends StatelessWidget {
             child: Center(
               child: FlatButton(
                 color: Colors.white,
-                child: Text("ZAGRAJ"),
+                child: Text("Zagraj teraz!"),
                 onPressed: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => GamePage()));
