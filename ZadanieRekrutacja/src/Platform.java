@@ -1,20 +1,27 @@
 import java.util.HashMap;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Platform extends Thread{
     private HashMap<Integer, Client> listOfClients;
+    private HashMap<Integer, Transaction> listOfTransactions;
     private double euroToUsdExchangeRate, zlToUsdExchangeRate, zlToEuroExchangeRate;
     private int eurPlnFluctuation, eurUsdFluctuation, UsdPlnFluctuation;
     private double EurPlnAmount, EurUsdAmount, UsdPlnAmount;
     public Platform() {
         this.listOfClients = new HashMap<>();
+        this.listOfTransactions = new HashMap<>();
         this.euroToUsdExchangeRate = 1.09;
         this.zlToEuroExchangeRate = 0.22;
         this.zlToUsdExchangeRate = 0.23;
         start();
     }
 
+    public void deposit(Client client, Transaction transaction){
+        client.setZlBalance(client.getZlBalance() + transaction.getAmount());
+    }
+    public void withdrawal(Client client, Transaction transaction){
+        client.setZlBalance(client.getZlBalance() - transaction.getAmount());
+    }
     public void run(){
         while(true) {
             try {
@@ -44,6 +51,10 @@ public class Platform extends Thread{
 
     public HashMap<Integer, Client> getListOfClients() {
         return listOfClients;
+    }
+
+    public HashMap<Integer, Transaction> getListOfTransactions() {
+        return listOfTransactions;
     }
 
     public double getEuroToUsdExchangeRate() {

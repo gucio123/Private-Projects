@@ -5,9 +5,6 @@ import java.awt.event.ActionListener;
 public class ClientsPanel extends Thread{
     private JPanel panel1;
     private JButton Wpłata;
-    private JButton button2;
-    private JButton button3;
-    private JButton button4;
     private JPanel currencies;
     private JLabel eurToZl;
     private JLabel eurToUsd;
@@ -17,22 +14,48 @@ public class ClientsPanel extends Thread{
     private JLabel SaldoUsd;
     private JComboBox Clients;
     private JButton dodajKlientaButton;
+    private JButton button1;
+    private JButton button2;
+    private JButton Deposit;
+    private JButton Withdrawal;
+    private JTextField DepositAmount;
+    private JTextField WithdrawalAmount;
     private Platform platform;
     private Client actualClient;
     public ClientsPanel() {
         platform = new Platform();
         start();
-        Wpłata.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                refresh();
-            }
-        });
-
         dodajKlientaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Clients.addItem(new Client(platform));
+                Client newClient = new Client(platform);
+                Clients.addItem(newClient);
+            }
+        });
+        Deposit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!DepositAmount.getText().contains(".") && !DepositAmount.getText().contains(",")){
+                    if(Integer.parseInt(DepositAmount.getText()) > 0){
+                        Transaction deposit = new Transaction("deposit",
+                                Integer.parseInt(DepositAmount.getText()), platform);
+                        actualClient.getListOfTransactions().add(deposit);
+                        platform.deposit(actualClient,deposit);
+                    }
+                }
+            }
+        });
+        Withdrawal.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!WithdrawalAmount.getText().contains(".") && !WithdrawalAmount.getText().contains(",") && !WithdrawalAmount.getText().contains("-")){
+                    if(actualClient.getZlBalance() >= Integer.parseInt(WithdrawalAmount.getText())){
+                        Transaction withdrawal = new Transaction("withdrawal",
+                                Integer.parseInt(WithdrawalAmount.getText()), platform);
+                        actualClient.getListOfTransactions().add(withdrawal);
+                        platform.withdrawal(actualClient, withdrawal);
+                    }
+                }
             }
         });
     }

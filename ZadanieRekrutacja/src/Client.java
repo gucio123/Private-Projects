@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Client {
@@ -7,14 +9,16 @@ public class Client {
     private int id;
     private String login;
     private String password;
-
+    private List<Transaction> listOfTransactions;
     public Client(Platform platform) {
         do{
             this.id = new Random().nextInt(16000);
         }while(platform.getListOfClients().containsKey(this.id));
+        platform.getListOfClients().put(this.getId(), this);
         this.euroBalance = 0;
         this.usdBalance = 0;
         this.zlBalance = 0;
+        this.listOfTransactions = new ArrayList<>();
     }
 
     @Override
@@ -22,6 +26,10 @@ public class Client {
         return "Client{" +
                 "id=" + id +
                 '}';
+    }
+
+    public List<Transaction> getListOfTransactions() {
+        return listOfTransactions;
     }
 
     public double getEuroBalance() {
