@@ -17,6 +17,13 @@ public class Client {
         this.zlBalance = 0;
     }
 
+    @Override
+    public String toString() {
+        return "Client{" +
+                "id=" + id +
+                '}';
+    }
+
     public double getEuroBalance() {
         return euroBalance;
     }
