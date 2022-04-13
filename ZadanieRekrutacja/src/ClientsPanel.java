@@ -104,8 +104,8 @@ public class ClientsPanel extends Thread{
         history.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFrame frame = new JFrame("History");
-                frame.setContentPane(new History(actualClient.getListOfTransactions()).getPanel1());
+                JFrame frame = new JFrame("HistorySorter");
+                frame.setContentPane(new HistorySorter(platform, actualClient).getPanel1());
                 frame.pack();
                 frame.setVisible(true);
             }

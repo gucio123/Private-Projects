@@ -139,6 +139,14 @@ public class Platform extends Thread{
         return newlist;
     }
 
+    public List<Transaction> typeHistory(List<Transaction> list, String type){
+        List<Transaction> newList;
+        newList = list.stream()
+                .filter(n -> n.getType().equals(type))
+                .collect(Collectors.toList());
+        return newList;
+    }
+
     public HashMap<Integer, Client> getListOfClients() {
         return listOfClients;
     }
