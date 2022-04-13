@@ -22,6 +22,10 @@ public class ClientsPanel extends Thread{
     private JButton Withdrawal;
     private JTextField DepositAmount;
     private JTextField WithdrawalAmount;
+    private JButton history;
+    private JButton historyPLN;
+    private JButton historyEUR;
+    private JButton historyUSD;
     private Platform platform;
     private Client actualClient;
     public ClientsPanel() {
@@ -43,6 +47,7 @@ public class ClientsPanel extends Thread{
                         actualClient.getListOfTransactions().add(deposit);
                         platform.deposit(actualClient,deposit);
                     }
+                    DepositAmount.setText("");
                 }
         });
         Withdrawal.addActionListener(new ActionListener() {
@@ -54,6 +59,7 @@ public class ClientsPanel extends Thread{
                         actualClient.getListOfTransactions().add(withdrawal);
                         platform.withdrawal(actualClient, withdrawal);
                     }
+                    WithdrawalAmount.setText("");
                 }
         });
         Transfer.addActionListener(new ActionListener() {
@@ -95,6 +101,45 @@ public class ClientsPanel extends Thread{
                 }
             }
         });
+        history.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame frame = new JFrame("History");
+                frame.setContentPane(new History(actualClient.getListOfTransactions()).getPanel1());
+                frame.pack();
+                frame.setVisible(true);
+            }
+        });
+        historyPLN.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame frame = new JFrame("History");
+                frame.setContentPane(new History(platform.currencyHistory(actualClient.getListOfTransactions(),
+                        "PLN")).getPanel1());
+                frame.pack();
+                frame.setVisible(true);
+            }
+        });
+        historyEUR.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame frame = new JFrame("History");
+                frame.setContentPane(new History(platform.currencyHistory(actualClient.getListOfTransactions(),
+                        "EUR")).getPanel1());
+                frame.pack();
+                frame.setVisible(true);
+            }
+        });
+        historyUSD.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame frame = new JFrame("History");
+                frame.setContentPane(new History(platform.currencyHistory(actualClient.getListOfTransactions(),
+                        "USD")).getPanel1());
+                frame.pack();
+                frame.setVisible(true);
+            }
+        });
     }
     public void run(){
         while(true) {
@@ -110,9 +155,9 @@ public class ClientsPanel extends Thread{
         eurToZl.setText("PLN  =>  EUR:  " + String.valueOf(Math.round(platform.getZlToEuroExchangeRate() * 100.0) / 100.0));
         ZlToUsd.setText("PLN  =>  USD:  " + String.valueOf(Math.round(platform.getZlToUsdExchangeRate() * 100.0) / 100.0));
         if(actualClient != null) {
-            SaldoPln.setText("Saldo konta PLN:  " + String.valueOf(actualClient.getZlBalance()));
-            SaldoEur.setText("Saldo konta EUR:  " + String.valueOf(actualClient.getEuroBalance()));
-            SaldoUsd.setText("Saldo konta USD:  " + String.valueOf(actualClient.getUsdBalance()));
+            SaldoPln.setText("Saldo konta PLN:  " + String.valueOf(Math.round(actualClient.getZlBalance()* 100.0) / 100.0));
+            SaldoEur.setText("Saldo konta EUR:  " + String.valueOf(Math.round(actualClient.getEuroBalance() * 100.0) / 100.0));
+            SaldoUsd.setText("Saldo konta USD:  " + String.valueOf(Math.round(actualClient.getUsdBalance() * 100.0) / 100.0));
 
         }
     }

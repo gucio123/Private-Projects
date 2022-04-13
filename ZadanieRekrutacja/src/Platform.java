@@ -1,5 +1,7 @@
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class Platform extends Thread{
     private HashMap<Integer, Client> listOfClients;
@@ -7,12 +9,17 @@ public class Platform extends Thread{
     private double euroToUsdExchangeRate, zlToUsdExchangeRate, zlToEuroExchangeRate;
     private int eurPlnFluctuation, eurUsdFluctuation, UsdPlnFluctuation;
     private double EurPlnAmount, EurUsdAmount, UsdPlnAmount;
+    private double transferFee, exchangeFee, depositFee, withdrawalFee;
     public Platform() {
         this.listOfClients = new HashMap<>();
         this.listOfTransactions = new HashMap<>();
         this.euroToUsdExchangeRate = 1.09;
         this.zlToEuroExchangeRate = 0.22;
         this.zlToUsdExchangeRate = 0.23;
+        this.transferFee = 0.03;
+        this.exchangeFee = 0.05;
+        this.depositFee = 0.02;
+        this.withdrawalFee = 0.01;
         start();
     }
 
@@ -29,9 +36,9 @@ public class Platform extends Thread{
                 this.eurPlnFluctuation = random.nextInt(3);
                 this.eurUsdFluctuation = random.nextInt(3);
                 this.UsdPlnFluctuation = random.nextInt(3);
-                this.EurPlnAmount = random.nextInt(5) / 100.0;
-                this.EurUsdAmount = random.nextInt(5) / 100.0;
-                this.UsdPlnAmount = random.nextInt(5) / 100.0;
+                this.EurPlnAmount = random.nextInt(2) / 100.0;
+                this.EurUsdAmount = random.nextInt(2) / 100.0;
+                this.UsdPlnAmount = random.nextInt(2) / 100.0;
                 if (eurPlnFluctuation == 1)
                     this.zlToEuroExchangeRate += EurPlnAmount;
                 else if (eurPlnFluctuation == 2)
@@ -44,7 +51,7 @@ public class Platform extends Thread{
                     this.zlToUsdExchangeRate += UsdPlnAmount;
                 else if (UsdPlnFluctuation == 2)
                     this.zlToUsdExchangeRate -= UsdPlnAmount;
-                Thread.sleep(5000);
+                Thread.sleep(10000);
             }catch (InterruptedException exc){}
         }
     }
@@ -65,25 +72,76 @@ public class Platform extends Thread{
             case "PLN":
                 if(client.getZlBalance() >= amount){
                     if(to.equals("EUR")) {
-//                        Transaction exchange = new Transaction("exchange", amount, this, "PLN");
+                        Transaction exchange = new Transaction("exchange", amount,
+                                this, "PLN", "PLN", "EUR");
                         client.setZlBalance(client.getZlBalance() - amount);
                         client.setEuroBalance(client.getEuroBalance() + Math.round((amount * zlToEuroExchangeRate)*100.0)/100.0);
-
+                        client.getListOfTransactions().add(exchange);
+                        this.listOfTransactions.put(exchange.getId(), exchange);
+                    }
+                    else if(to.equals("USD")){
+                        Transaction exchange = new Transaction("exchange", amount,
+                                this, "PLN", "PLN", "USD");
+                        client.setZlBalance(client.getZlBalance() - amount);
+                        client.setUsdBalance(client.getUsdBalance() + Math.round((amount * zlToUsdExchangeRate)*100.0)/100.0);
+                        client.getListOfTransactions().add(exchange);
+                        this.listOfTransactions.put(exchange.getId(), exchange);
                     }
                 }
                 break;
             case "EUR":
-
+                if(client.getEuroBalance() >= amount){
+                    if(to.equals("PLN")){
+                        Transaction exchange = new Transaction("exchange", amount,
+                                this, "EUR", "EUR", "PLN");
+                        client.setEuroBalance(client.getEuroBalance() - amount);
+                        client.setZlBalance(client.getZlBalance() + Math.round((amount / zlToEuroExchangeRate)*100.0)/100.0);
+                        client.getListOfTransactions().add(exchange);
+                        this.listOfTransactions.put(exchange.getId(), exchange);
+                    }
+                    else if(to.equals("USD")){
+                        Transaction exchange = new Transaction("exchange", amount, this,
+                                "EUR", "EUR", "USD");
+                        client.setEuroBalance(client.getEuroBalance() - amount);
+                        client.setUsdBalance(client.getUsdBalance() + Math.round((amount * euroToUsdExchangeRate)*100.0)/100.0);
+                        client.getListOfTransactions().add(exchange);
+                        this.listOfTransactions.put(exchange.getId(), exchange);
+                    }
+                }
                 break;
             case "USD":
-
+                if(client.getUsdBalance() >= amount){
+                    if(to.equals("PLN")){
+                        Transaction exchange = new Transaction("exchange", amount,
+                                this, "USD", "USD", "PLN");
+                        client.setUsdBalance(client.getUsdBalance() - amount);
+                        client.setZlBalance(client.getZlBalance() + Math.round((amount / zlToUsdExchangeRate)*100.0)/100.0);
+                        client.getListOfTransactions().add(exchange);
+                        this.listOfTransactions.put(exchange.getId(), exchange);
+                    }
+                    else if(to.equals("EUR")){
+                        Transaction exchange = new Transaction("exchange", amount, this,
+                                "USD", "USD", "EUR");
+                        client.setUsdBalance(client.getUsdBalance() - amount);
+                        client.setEuroBalance(client.getEuroBalance() + Math.round((amount / euroToUsdExchangeRate)*100.0)/100.0);
+                        client.getListOfTransactions().add(exchange);
+                        this.listOfTransactions.put(exchange.getId(), exchange);
+                }
                 break;
-        }
+        }}
     }
+
+    public List<Transaction> currencyHistory(List<Transaction> list, String currency){
+        List<Transaction> newlist;
+        newlist = list.stream()
+                .filter(n -> n.getFrom() == currency || n.getCurrency() == currency || n.getTo() == currency)
+                .collect(Collectors.toList());
+        return newlist;
+    }
+
     public HashMap<Integer, Client> getListOfClients() {
         return listOfClients;
     }
-
     public HashMap<Integer, Transaction> getListOfTransactions() {
         return listOfTransactions;
     }

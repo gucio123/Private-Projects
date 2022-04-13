@@ -52,4 +52,16 @@ public class Transaction {
     public int getAmount() {
         return amount;
     }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public String getTo() {
+        return to;
+    }
 }
