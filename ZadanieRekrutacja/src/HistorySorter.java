@@ -10,8 +10,6 @@ public class HistorySorter {
     private JRadioButton withdrawalButton;
     private JRadioButton exchangeButton;
     private JRadioButton transferButton;
-    private JTextField dateFrom;
-    private JTextField dateTo;
     private JButton dateSort;
 
     public HistorySorter(Platform platform, Client client){
@@ -61,24 +59,13 @@ public class HistorySorter {
 
             }
         });
-        dateFrom.addKeyListener(new KeyAdapter() {
+        dateSort.addActionListener(new ActionListener() {
             @Override
-            public void keyTyped(KeyEvent e) {
-                super.keyTyped(e);
-                char c = e.getKeyChar();
-                if ( ((c < '0') || (c > '9')) && (c != KeyEvent.VK_BACK_SPACE)) {
-                    e.consume();
-                }
-            }
-        });
-        dateTo.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-                super.keyTyped(e);
-                char c = e.getKeyChar();
-                if ( ((c < '0') || (c > '9')) && (c != KeyEvent.VK_BACK_SPACE)) {
-                    e.consume();
-                }
+            public void actionPerformed(ActionEvent e) {
+                JFrame frame = new JFrame("DatePicker");
+                frame.setContentPane(new DatePicker().getPanel1());
+                frame.pack();
+                frame.setVisible(true);
             }
         });
     }

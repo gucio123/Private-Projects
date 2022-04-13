@@ -1,11 +1,12 @@
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
 public class Transaction {
     private int id;
     private String type;
-    private Date date;
+    private Calendar date;
     private int amount;
     private String currency;
     private String from;
@@ -17,7 +18,7 @@ public class Transaction {
         }while(platform.getListOfTransactions().containsKey(this.id));
         platform.getListOfTransactions().put(this.id, this);
         this.type = type;
-        this.date = new Date();
+        this.date = Calendar.getInstance();
         this.amount = amount;
         this.currency = currency;
         this.from = from;
@@ -29,7 +30,7 @@ public class Transaction {
         return "Transaction{" +
                 "id=" + id +
                 ", type='" + type + '\'' +
-                ", date=" + date +
+                ", date=" + date.getTime() +
                 ", amount=" + amount +
                 ", currency='" + currency + '\'' +
                 ", from='" + from + '\'' +
@@ -45,7 +46,7 @@ public class Transaction {
         return type;
     }
 
-    public Date getDate() {
+    public Calendar getDate() {
         return date;
     }
 
