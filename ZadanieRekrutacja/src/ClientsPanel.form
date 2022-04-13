@@ -173,24 +173,24 @@
               </component>
             </children>
           </grid>
-          <component id="c9fe8" class="javax.swing.JButton" binding="button1" default-binding="true">
+          <component id="c9fe8" class="javax.swing.JButton" binding="Transfer">
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="350" height="50"/>
               </grid>
             </constraints>
             <properties>
-              <text value="Button"/>
+              <text value="Przelew"/>
             </properties>
           </component>
-          <component id="319df" class="javax.swing.JButton" binding="button2" default-binding="true">
+          <component id="319df" class="javax.swing.JButton" binding="changingCurrency">
             <constraints>
               <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="350" height="50"/>
               </grid>
             </constraints>
             <properties>
-              <text value="Button"/>
+              <text value="Przewalutowanie"/>
             </properties>
           </component>
         </children>

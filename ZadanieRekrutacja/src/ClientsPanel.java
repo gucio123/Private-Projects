@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class ClientsPanel extends Thread{
     private JPanel panel1;
@@ -14,8 +16,8 @@ public class ClientsPanel extends Thread{
     private JLabel SaldoUsd;
     private JComboBox Clients;
     private JButton dodajKlientaButton;
-    private JButton button1;
-    private JButton button2;
+    private JButton Transfer;
+    private JButton changingCurrency;
     private JButton Deposit;
     private JButton Withdrawal;
     private JTextField DepositAmount;
@@ -35,26 +37,61 @@ public class ClientsPanel extends Thread{
         Deposit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(!DepositAmount.getText().contains(".") && !DepositAmount.getText().contains(",")){
                     if(Integer.parseInt(DepositAmount.getText()) > 0){
                         Transaction deposit = new Transaction("deposit",
-                                Integer.parseInt(DepositAmount.getText()), platform);
+                                Integer.parseInt(DepositAmount.getText()), platform, "PLN");
                         actualClient.getListOfTransactions().add(deposit);
                         platform.deposit(actualClient,deposit);
                     }
                 }
-            }
         });
         Withdrawal.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(!WithdrawalAmount.getText().contains(".") && !WithdrawalAmount.getText().contains(",") && !WithdrawalAmount.getText().contains("-")){
                     if(actualClient.getZlBalance() >= Integer.parseInt(WithdrawalAmount.getText())){
                         Transaction withdrawal = new Transaction("withdrawal",
-                                Integer.parseInt(WithdrawalAmount.getText()), platform);
+                                Integer.parseInt(WithdrawalAmount.getText()), platform, "PLN");
                         actualClient.getListOfTransactions().add(withdrawal);
                         platform.withdrawal(actualClient, withdrawal);
                     }
+                }
+        });
+        Transfer.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame transfer = new JFrame("Transfer");
+                transfer.setContentPane(new Transfer(actualClient, platform).getPanel1());
+                transfer.pack();
+                transfer.setVisible(true);
+            }
+        });
+        changingCurrency.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame frame = new JFrame("ExchangingCurrencyGUI");
+                frame.setContentPane(new ExchangingCurrencyGUI(actualClient, platform).getPanel1());
+                frame.pack();
+                frame.setVisible(true);
+            }
+        });
+        DepositAmount.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                super.keyTyped(e);
+                char c = e.getKeyChar();
+                if ( ((c < '0') || (c > '9')) && (c != KeyEvent.VK_BACK_SPACE)) {
+                    e.consume();
+                }
+
+            }
+        });
+        WithdrawalAmount.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                super.keyTyped(e);
+                char c = e.getKeyChar();
+                if ( ((c < '0') || (c > '9')) && (c != KeyEvent.VK_BACK_SPACE)) {
+                    e.consume();
                 }
             }
         });
@@ -76,6 +113,7 @@ public class ClientsPanel extends Thread{
             SaldoPln.setText("Saldo konta PLN:  " + String.valueOf(actualClient.getZlBalance()));
             SaldoEur.setText("Saldo konta EUR:  " + String.valueOf(actualClient.getEuroBalance()));
             SaldoUsd.setText("Saldo konta USD:  " + String.valueOf(actualClient.getUsdBalance()));
+
         }
     }
     public static void main(String[] args) {

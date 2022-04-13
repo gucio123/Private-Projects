@@ -7,8 +7,9 @@ public class Transaction {
     private String type;
     private Date date;
     private int amount;
+    private String currency;
     SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-    public Transaction(String type, int amount, Platform platform) {
+    public Transaction(String type, int amount, Platform platform, String currency) {
         do{
             this.id = new Random().nextInt(250000);
         }while(platform.getListOfTransactions().containsKey(this.id));
@@ -16,6 +17,7 @@ public class Transaction {
         this.type = type;
         this.date = new Date();
         this.amount = amount;
+        this.currency = currency;
     }
 
     @Override
@@ -23,8 +25,9 @@ public class Transaction {
         return "Transaction{" +
                 "id=" + id +
                 ", type='" + type + '\'' +
-                ", date=" + formatter.format(date) +
+                ", date=" + date +
                 ", amount=" + amount +
+                ", currency='" + currency + '\'' +
                 '}';
     }
 

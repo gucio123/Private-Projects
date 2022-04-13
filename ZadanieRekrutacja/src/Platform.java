@@ -48,7 +48,33 @@ public class Platform extends Thread{
             }catch (InterruptedException exc){}
         }
     }
+    public void transfer(Client client, int id, int amount){
+        client.setZlBalance(client.getZlBalance() - amount);
+        listOfClients.get(id).setZlBalance(listOfClients.get(id).getZlBalance() + amount);
+        Transaction transaction = new Transaction("transfer", amount, this, "PLN");
+        listOfClients.get(id).getListOfTransactions().add(transaction);
+        listOfTransactions.put(transaction.getId(), transaction);
+        transaction = new Transaction("transfer", amount * (-1), this, "PLN");
+        client.getListOfTransactions().add(transaction);
+    }
 
+    public void exchange(Client client, String from, String to, int amount){
+        switch (from) {
+            case "PLN":
+                if(client.getZlBalance() >= amount){
+                    if(to.equals("EUR")) {
+
+                    }
+                }
+                break;
+            case "EUR":
+
+                break;
+            case "USD":
+
+                break;
+        }
+    }
     public HashMap<Integer, Client> getListOfClients() {
         return listOfClients;
     }
