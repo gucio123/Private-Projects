@@ -51,10 +51,12 @@ public class Platform extends Thread{
     public void transfer(Client client, int id, int amount){
         client.setZlBalance(client.getZlBalance() - amount);
         listOfClients.get(id).setZlBalance(listOfClients.get(id).getZlBalance() + amount);
-        Transaction transaction = new Transaction("transfer", amount, this, "PLN");
+        Transaction transaction = new Transaction("transfer", amount, this, "PLN",
+                String.valueOf(client.getId()), String.valueOf(id));
         listOfClients.get(id).getListOfTransactions().add(transaction);
         listOfTransactions.put(transaction.getId(), transaction);
-        transaction = new Transaction("transfer", amount * (-1), this, "PLN");
+        transaction = new Transaction("transfer", amount * (-1), this, "PLN",
+                String.valueOf(client.getId()), String.valueOf(id));
         client.getListOfTransactions().add(transaction);
     }
 
@@ -63,6 +65,9 @@ public class Platform extends Thread{
             case "PLN":
                 if(client.getZlBalance() >= amount){
                     if(to.equals("EUR")) {
+//                        Transaction exchange = new Transaction("exchange", amount, this, "PLN");
+                        client.setZlBalance(client.getZlBalance() - amount);
+                        client.setEuroBalance(client.getEuroBalance() + Math.round((amount * zlToEuroExchangeRate)*100.0)/100.0);
 
                     }
                 }

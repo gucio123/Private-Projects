@@ -8,8 +8,10 @@ public class Transaction {
     private Date date;
     private int amount;
     private String currency;
+    private String from;
+    private String to;
     SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-    public Transaction(String type, int amount, Platform platform, String currency) {
+    public Transaction(String type, int amount, Platform platform, String currency, String from, String to) {
         do{
             this.id = new Random().nextInt(250000);
         }while(platform.getListOfTransactions().containsKey(this.id));
@@ -18,6 +20,8 @@ public class Transaction {
         this.date = new Date();
         this.amount = amount;
         this.currency = currency;
+        this.from = from;
+        this.to = to;
     }
 
     @Override
@@ -28,6 +32,8 @@ public class Transaction {
                 ", date=" + date +
                 ", amount=" + amount +
                 ", currency='" + currency + '\'' +
+                ", from='" + from + '\'' +
+                ", to='" + to + '\'' +
                 '}';
     }
 

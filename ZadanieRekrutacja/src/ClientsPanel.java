@@ -39,7 +39,7 @@ public class ClientsPanel extends Thread{
             public void actionPerformed(ActionEvent e) {
                     if(Integer.parseInt(DepositAmount.getText()) > 0){
                         Transaction deposit = new Transaction("deposit",
-                                Integer.parseInt(DepositAmount.getText()), platform, "PLN");
+                                Integer.parseInt(DepositAmount.getText()), platform, "PLN", "-", "-");
                         actualClient.getListOfTransactions().add(deposit);
                         platform.deposit(actualClient,deposit);
                     }
@@ -50,7 +50,7 @@ public class ClientsPanel extends Thread{
             public void actionPerformed(ActionEvent e) {
                     if(actualClient.getZlBalance() >= Integer.parseInt(WithdrawalAmount.getText())){
                         Transaction withdrawal = new Transaction("withdrawal",
-                                Integer.parseInt(WithdrawalAmount.getText()), platform, "PLN");
+                                Integer.parseInt(WithdrawalAmount.getText()), platform, "PLN", "-", "-");
                         actualClient.getListOfTransactions().add(withdrawal);
                         platform.withdrawal(actualClient, withdrawal);
                     }
