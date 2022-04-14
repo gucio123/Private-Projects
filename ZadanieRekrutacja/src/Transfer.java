@@ -36,22 +36,18 @@ public class Transfer {
         TransferDoneButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(amountField.getText().length() > 0 && recipientField.getText().length() > 0)
                     if (Integer.parseInt(String.valueOf(amountField.getText())) > 0 &&
-                            Integer.parseInt(String.valueOf(amountField.getText())) <= client.getZlBalance()) {
-                        if(platform.getListOfClients().containsKey(Integer.parseInt(recipientField.getText())))
-                            platform.transfer(client, Integer.parseInt(recipientField.getText()),
+                            Integer.parseInt(String.valueOf(amountField.getText()))
+                            + Integer.parseInt(String.valueOf(amountField.getText())) * platform.getTransferFee()
+                            <= client.getZlBalance()){
+                                if(platform.getListOfClients().containsKey(Integer.parseInt(recipientField.getText())))
+                                    platform.transfer(client, Integer.parseInt(recipientField.getText()),
                                     Integer.parseInt(amountField.getText()));
                     }
                 }
+                //jesli jest cokolwiek wpisane w pole id oraz ilosc to wywoluję metodę transfer na obiekcie platform
         });
-    }
-
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Transfer");
-//        frame.setContentPane(new Transfer().panel1);
-//        frame.setDefaultCloseOperation(JFrame.);
-        frame.pack();
-        frame.setVisible(true);
     }
 
     public JPanel getPanel1() {

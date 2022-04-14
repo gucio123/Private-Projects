@@ -14,8 +14,8 @@ public class ExchangingCurrencyGUI {
     public ExchangingCurrencyGUI(Client client, Platform platform) {
         Currency1.addItem("PLN");
         Currency1.addItem("EUR");
-        Currency1.addItem("USD");
-        makingNewComboBox();
+        Currency1.addItem("USD"); // dodaję trzy waluty do comboBoxa
+        makingNewComboBox();      // wywolanie metody na tworzenie drugiego comboBoxa
         amountOfMoney.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -35,12 +35,13 @@ public class ExchangingCurrencyGUI {
         changeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(amountOfMoney.getText().length() > 0)
                 platform.exchange(client, ( String ) Currency1.getSelectedItem(), ( String ) Currency2.getSelectedItem(),
                         Integer.parseInt(amountOfMoney.getText()));
             }
         });
     }
-    private void makingNewComboBox(){
+    private void makingNewComboBox(){ // tworzenie nowego comboBoxa stworzonego z dwóch pozostałych walut
         Currency2.removeAllItems();
         for(int i = 0; i < currencies.length; i++){
             if(!Currency1.getSelectedItem().equals(currencies[i])) {

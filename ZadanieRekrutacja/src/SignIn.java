@@ -19,7 +19,6 @@ public class SignIn {
                 if(IdField.getText().equals(String.valueOf(client.getId()))
                         && client.getHashedpassword() == passwordField.getText().hashCode()){
                     panel.setActualClient(client);
-                    System.out.println("dupa");
                 }
             }
         });

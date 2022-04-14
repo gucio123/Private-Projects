@@ -3,11 +3,12 @@ import java.util.List;
 import java.util.Random;
 
 public class Client {
+    private double input;
+    private int profit;
     private double euroBalance;
     private double usdBalance;
     private double zlBalance;
     private int id;
-    private String login;
     private int hashedpassword;
     private List<Transaction> listOfTransactions;
     public Client(Platform platform) {
@@ -66,5 +67,13 @@ public class Client {
 
     public void setHashedpassword(int hashedpassword) {
         this.hashedpassword = hashedpassword;
+    }
+
+    public void setInput(double input) {
+        this.input = input;
+    }
+
+    public double getInput() {
+        return input;
     }
 }

@@ -25,10 +25,11 @@ public class Platform extends Thread{
     }
 
     public void deposit(Client client, Transaction transaction){
-        client.setZlBalance(client.getZlBalance() + transaction.getAmount());
+        client.setZlBalance(client.getZlBalance() + transaction.getAmount() - transaction.getAmount() * depositFee);
+        client.setInput( (client.getInput() + transaction.getAmount() - transaction.getAmount() * depositFee));
     }
     public void withdrawal(Client client, Transaction transaction){
-        client.setZlBalance(client.getZlBalance() - transaction.getAmount());
+        client.setZlBalance(client.getZlBalance() - transaction.getAmount() - transaction.getAmount() * withdrawalFee);
     }
     public void run(){
         while(true) {
@@ -57,7 +58,7 @@ public class Platform extends Thread{
         }
     }
     public void transfer(Client client, int id, int amount){
-        client.setZlBalance(client.getZlBalance() - amount);
+        client.setZlBalance(client.getZlBalance() - amount - amount * transferFee);
         listOfClients.get(id).setZlBalance(listOfClients.get(id).getZlBalance() + amount);
         Transaction transaction = new Transaction("transfer", amount, this, "PLN",
                 String.valueOf(client.getId()), String.valueOf(id));
@@ -71,11 +72,11 @@ public class Platform extends Thread{
     public void exchange(Client client, String from, String to, int amount){
         switch (from) {
             case "PLN":
-                if(client.getZlBalance() >= amount){
+                if(client.getZlBalance() >= amount + amount * exchangeFee){
                     if(to.equals("EUR")) {
                         Transaction exchange = new Transaction("exchange", amount,
                                 this, "PLN", "PLN", "EUR");
-                        client.setZlBalance(client.getZlBalance() - amount);
+                        client.setZlBalance(client.getZlBalance() - amount - amount * exchangeFee);
                         client.setEuroBalance(client.getEuroBalance() + Math.round((amount * zlToEuroExchangeRate)*100.0)/100.0);
                         client.getListOfTransactions().add(exchange);
                         this.listOfTransactions.put(exchange.getId(), exchange);
@@ -83,7 +84,7 @@ public class Platform extends Thread{
                     else if(to.equals("USD")){
                         Transaction exchange = new Transaction("exchange", amount,
                                 this, "PLN", "PLN", "USD");
-                        client.setZlBalance(client.getZlBalance() - amount);
+                        client.setZlBalance(client.getZlBalance() - amount - amount * exchangeFee);
                         client.setUsdBalance(client.getUsdBalance() + Math.round((amount * zlToUsdExchangeRate)*100.0)/100.0);
                         client.getListOfTransactions().add(exchange);
                         this.listOfTransactions.put(exchange.getId(), exchange);
@@ -91,11 +92,11 @@ public class Platform extends Thread{
                 }
                 break;
             case "EUR":
-                if(client.getEuroBalance() >= amount){
+                if(client.getEuroBalance() >= amount + amount * exchangeFee){
                     if(to.equals("PLN")){
                         Transaction exchange = new Transaction("exchange", amount,
                                 this, "EUR", "EUR", "PLN");
-                        client.setEuroBalance(client.getEuroBalance() - amount);
+                        client.setEuroBalance(client.getEuroBalance() - amount - amount * exchangeFee);
                         client.setZlBalance(client.getZlBalance() + Math.round((amount / zlToEuroExchangeRate)*100.0)/100.0);
                         client.getListOfTransactions().add(exchange);
                         this.listOfTransactions.put(exchange.getId(), exchange);
@@ -103,7 +104,7 @@ public class Platform extends Thread{
                     else if(to.equals("USD")){
                         Transaction exchange = new Transaction("exchange", amount, this,
                                 "EUR", "EUR", "USD");
-                        client.setEuroBalance(client.getEuroBalance() - amount);
+                        client.setEuroBalance(client.getEuroBalance() - amount - amount * exchangeFee);
                         client.setUsdBalance(client.getUsdBalance() + Math.round((amount * euroToUsdExchangeRate)*100.0)/100.0);
                         client.getListOfTransactions().add(exchange);
                         this.listOfTransactions.put(exchange.getId(), exchange);
@@ -111,11 +112,11 @@ public class Platform extends Thread{
                 }
                 break;
             case "USD":
-                if(client.getUsdBalance() >= amount){
+                if(client.getUsdBalance() >= amount + amount * exchangeFee){
                     if(to.equals("PLN")){
                         Transaction exchange = new Transaction("exchange", amount,
                                 this, "USD", "USD", "PLN");
-                        client.setUsdBalance(client.getUsdBalance() - amount);
+                        client.setUsdBalance(client.getUsdBalance() - amount - amount * exchangeFee);
                         client.setZlBalance(client.getZlBalance() + Math.round((amount / zlToUsdExchangeRate)*100.0)/100.0);
                         client.getListOfTransactions().add(exchange);
                         this.listOfTransactions.put(exchange.getId(), exchange);
@@ -123,7 +124,7 @@ public class Platform extends Thread{
                     else if(to.equals("EUR")){
                         Transaction exchange = new Transaction("exchange", amount, this,
                                 "USD", "USD", "EUR");
-                        client.setUsdBalance(client.getUsdBalance() - amount);
+                        client.setUsdBalance(client.getUsdBalance() - amount - amount * exchangeFee);
                         client.setEuroBalance(client.getEuroBalance() + Math.round((amount / euroToUsdExchangeRate)*100.0)/100.0);
                         client.getListOfTransactions().add(exchange);
                         this.listOfTransactions.put(exchange.getId(), exchange);
@@ -173,6 +174,22 @@ public class Platform extends Thread{
 
     public double getZlToEuroExchangeRate() {
         return zlToEuroExchangeRate;
+    }
+
+    public double getTransferFee() {
+        return transferFee;
+    }
+
+    public double getExchangeFee() {
+        return exchangeFee;
+    }
+
+    public double getDepositFee() {
+        return depositFee;
+    }
+
+    public double getWithdrawalFee() {
+        return withdrawalFee;
     }
 
     public static void main(String[] args) {
