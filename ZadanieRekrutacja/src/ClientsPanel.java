@@ -3,6 +3,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Calendar;
 
 public class ClientsPanel extends Thread{
     private JPanel panel1;
@@ -28,14 +29,19 @@ public class ClientsPanel extends Thread{
     private JButton historyUSD;
     private Platform platform;
     private Client actualClient;
+    ClientsPanel var;
     public ClientsPanel() {
+        var = this;
         platform = new Platform();
         start();
         dodajKlientaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Client newClient = new Client(platform);
-                Clients.addItem(newClient);
+                JFrame frame = new JFrame("Register");
+                frame.setContentPane(new Register(newClient, platform, Clients).getPanel1());
+                frame.pack();
+                frame.setVisible(true);
             }
         });
         Deposit.addActionListener(new ActionListener() {
@@ -140,10 +146,20 @@ public class ClientsPanel extends Thread{
                 frame.setVisible(true);
             }
         });
+        Clients.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame frame = new JFrame("SignIn");
+                frame.setContentPane(new SignIn((Client)Clients.getSelectedItem(), var).getPanel1());
+                frame.pack();
+                frame.setVisible(true);
+            }
+        });
     }
     public void run(){
         while(true) {
-            actualClient = (Client) Clients.getSelectedItem();
+//            actualClient = (Client) Clients.getSelectedItem();
             try {
                 refresh();
                 Thread.sleep(1);
@@ -161,6 +177,15 @@ public class ClientsPanel extends Thread{
 
         }
     }
+
+    public JComboBox getClients() {
+        return Clients;
+    }
+
+    public void setActualClient(Client actualClient) {
+        this.actualClient = actualClient;
+    }
+
     public static void main(String[] args) {
         JFrame frame = new JFrame("ClientsPanel");
         frame.setContentPane(new ClientsPanel().panel1);

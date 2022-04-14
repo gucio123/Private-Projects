@@ -8,7 +8,7 @@ public class Client {
     private double zlBalance;
     private int id;
     private String login;
-    private String password;
+    private int hashedpassword;
     private List<Transaction> listOfTransactions;
     public Client(Platform platform) {
         do{
@@ -58,5 +58,13 @@ public class Client {
 
     public int getId() {
         return id;
+    }
+
+    public int getHashedpassword() {
+        return hashedpassword;
+    }
+
+    public void setHashedpassword(int hashedpassword) {
+        this.hashedpassword = hashedpassword;
     }
 }

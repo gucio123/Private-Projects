@@ -87,17 +87,17 @@ public class DatePicker {
             public void actionPerformed(ActionEvent e) {
                 Calendar dateFrom = Calendar.getInstance();
                 Calendar dateTo = Calendar.getInstance();
-                if(DayFieldFrom.getText().length() == 2 && MonthFieldFrom.getText().length() == 2
-                && YearFieldFrom.getText().length() == 4 && HourFieldFrom.getText().length() == 2
-                && MinuteFieldFrom.getText().length() == 2 && SecondFieldFrom.getText().length() == 2
-                && DayFieldTO.getText().length() == 2 && MonthFieldTo.getText().length() == 2
-                        && YearFieldTo.getText().length() == 4 && HourFieldTo.getText().length() == 2
-                        && MinuteFieldTo.getText().length() == 2 && SecondFieldTo.getText().length() == 2){
-                    dateFrom.set(Integer.parseInt(YearFieldFrom.getText()), Integer.parseInt(MonthFieldFrom.getText()) + 1,
+                if(DayFieldFrom.getText().length() == 2 && MonthFieldFrom.getText().length() <= 2
+                && YearFieldFrom.getText().length() == 4 && HourFieldFrom.getText().length() <= 2
+                && MinuteFieldFrom.getText().length() <= 2 && SecondFieldFrom.getText().length() <= 2
+                && DayFieldTO.getText().length() <= 2 && MonthFieldTo.getText().length() <= 2
+                        && YearFieldTo.getText().length() == 4 && HourFieldTo.getText().length() <= 2
+                        && MinuteFieldTo.getText().length() <= 2 && SecondFieldTo.getText().length() <= 2){
+                    dateFrom.set(Integer.parseInt(YearFieldFrom.getText()), Integer.parseInt(MonthFieldFrom.getText()) - 1,
                             Integer.parseInt(DayFieldFrom.getText()), Integer.parseInt(HourFieldFrom.getText()),
                             Integer.parseInt(MinuteFieldFrom.getText()), Integer.parseInt(SecondFieldFrom.getText()));
 
-                    dateTo.set(Integer.parseInt(YearFieldTo.getText()), Integer.parseInt(MonthFieldTo.getText()) + 1,
+                    dateTo.set(Integer.parseInt(YearFieldTo.getText()), Integer.parseInt(MonthFieldTo.getText()) - 1,
                             Integer.parseInt(DayFieldTO.getText()), Integer.parseInt(HourFieldTo.getText()),
                             Integer.parseInt(MinuteFieldTo.getText()), Integer.parseInt(SecondFieldTo.getText()));
                     JFrame frame = new JFrame("DateHistory");
