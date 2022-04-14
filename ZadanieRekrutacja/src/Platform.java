@@ -1,3 +1,4 @@
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -143,6 +144,14 @@ public class Platform extends Thread{
         List<Transaction> newList;
         newList = list.stream()
                 .filter(n -> n.getType().equals(type))
+                .collect(Collectors.toList());
+        return newList;
+    }
+
+    public List<Transaction> dateHistory(List<Transaction> list, Calendar dateFrom, Calendar dateTo){
+        List<Transaction> newList;
+        newList = list.stream()
+                .filter(n -> n.getDate().before(dateTo) && n.getDate().after(dateFrom))
                 .collect(Collectors.toList());
         return newList;
     }

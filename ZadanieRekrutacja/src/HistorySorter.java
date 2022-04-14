@@ -56,14 +56,8 @@ public class HistorySorter {
         dateSort.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-        dateSort.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
                 JFrame frame = new JFrame("DatePicker");
-                frame.setContentPane(new DatePicker().getPanel1());
+                frame.setContentPane(new DatePicker(client, platform).getPanel1());
                 frame.pack();
                 frame.setVisible(true);
             }
