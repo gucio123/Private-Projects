@@ -18,7 +18,7 @@ public class SignIn {
             public void actionPerformed(ActionEvent e) {
                 if(IdField.getText().equals(String.valueOf(client.getId()))
                         && client.getHashedpassword() == passwordField.getText().hashCode()){
-                    panel.setActualClient(client);
+                    panel.setActualClient(client); // jesli hashe haseł się pokrywają, to wybrany klient staje się klientem na ktorym mozemy dzialac
                 }
             }
         });

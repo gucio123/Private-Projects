@@ -21,17 +21,18 @@ public class Platform extends Thread{
         this.exchangeFee = 0.05;
         this.depositFee = 0.02;
         this.withdrawalFee = 0.01;
+        //ustawienie podstawowych parametrów
         start();
     }
 
-    public void deposit(Client client, Transaction transaction){
+    public void deposit(Client client, Transaction transaction){ // dodajemy pieniądze do rachunku zlotowek, bo jest walutą bazową
         client.setZlBalance(client.getZlBalance() + transaction.getAmount() - transaction.getAmount() * depositFee);
-        client.setInput( (client.getInput() + transaction.getAmount() - transaction.getAmount() * depositFee));
+        client.setInput( (client.getInput() + transaction.getAmount() - transaction.getAmount() * depositFee));//dodajemy pieniądze do łącznej ilości wpłaconych pieniędzy
     }
     public void withdrawal(Client client, Transaction transaction){
         client.setZlBalance(client.getZlBalance() - transaction.getAmount() - transaction.getAmount() * withdrawalFee);
     }
-    public void run(){
+    public void run(){ //wątek zmieniający kurs walut o niewielką ilość w górę lub w dół co 10s
         while(true) {
             try {
                 Random random = new Random();
@@ -57,7 +58,8 @@ public class Platform extends Thread{
             }catch (InterruptedException exc){}
         }
     }
-    public void transfer(Client client, int id, int amount){
+    public void transfer(Client client, int id, int amount){ // metoda przelewu
+        //transakcje dodajemy do obu klientów bo obaj biorą udział w operacji
         client.setZlBalance(client.getZlBalance() - amount - amount * transferFee);
         listOfClients.get(id).setZlBalance(listOfClients.get(id).getZlBalance() + amount);
         Transaction transaction = new Transaction("transfer", amount, this, "PLN",
@@ -70,6 +72,7 @@ public class Platform extends Thread{
     }
 
     public void exchange(Client client, String from, String to, int amount){
+        //metoda wymiany walut
         switch (from) {
             case "PLN":
                 if(client.getZlBalance() >= amount + amount * exchangeFee){
@@ -132,7 +135,7 @@ public class Platform extends Thread{
                 break;
         }}
     }
-
+    //następnie funkcje które sortują listę transakcji pod potrzeby uzytkownika
     public List<Transaction> currencyHistory(List<Transaction> list, String currency){
         List<Transaction> newlist;
         newlist = list.stream()
@@ -192,11 +195,4 @@ public class Platform extends Thread{
         return withdrawalFee;
     }
 
-    public static void main(String[] args) {
-        Platform platform = new Platform();
-        Client client = new Client(platform);
-        platform.listOfClients.put(client.getId(), client);
-
-        System.out.println(platform.listOfClients);
-    }
 }

@@ -15,7 +15,7 @@ public class Transaction {
     public Transaction(String type, int amount, Platform platform, String currency, String from, String to) {
         do{
             this.id = new Random().nextInt(250000);
-        }while(platform.getListOfTransactions().containsKey(this.id));
+        }while(platform.getListOfTransactions().containsKey(this.id)); //ustawienie id transakcji
         platform.getListOfTransactions().put(this.id, this);
         this.type = type;
         this.date = Calendar.getInstance();

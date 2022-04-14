@@ -13,6 +13,8 @@ public class HistorySorter {
     private JButton dateSort;
 
     public HistorySorter(Platform platform, Client client){
+        //kazda metoda wywoluje nową Historię, która za argument przyjmuje listę.
+        //kazdy przycisk wywoluje inną metodę z klasy platform, która zwraca odpowiednia listę
         depositButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -68,11 +70,4 @@ public class HistorySorter {
         return panel1;
     }
 
-    public static void main(String[] args) {
-//        JFrame frame = new JFrame("HistorySorter");
-//        frame.setContentPane(new HistorySorter().panel1);
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.pack();
-//        frame.setVisible(true);
-    }
 }
