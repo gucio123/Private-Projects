@@ -40,7 +40,7 @@ public class ClientsPanel extends Thread{
             public void actionPerformed(ActionEvent e) {
                 Client newClient = new Client(platform);
                 JFrame frame = new JFrame("Register");
-                frame.setContentPane(new Register(newClient, platform, Clients).getPanel1());
+                frame.setContentPane(new Register(newClient, platform, Clients, frame).getPanel1());
                 frame.pack();
                 frame.setVisible(true);
             }

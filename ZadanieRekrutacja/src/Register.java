@@ -10,8 +10,8 @@ public class Register {
     private JTextField passwordField1;
     private JButton registerButton;
     private JTextField baiscInput;
-
-    public Register(Client client, Platform platform, JComboBox comboBox) {
+    private JFrame frame;
+    public Register(Client client, Platform platform, JComboBox comboBox, JFrame frame) {
         idField.setText(String.valueOf(client.getId()));
         passwordField1.addActionListener(new ActionListener() {
             @Override
@@ -29,6 +29,7 @@ public class Register {
                     client.getListOfTransactions().add(deposit);
                     platform.deposit(client,deposit);
                     comboBox.addItem(client);
+                    frame.dispose();
                 }
             }
         });
