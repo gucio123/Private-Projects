@@ -16,8 +16,9 @@ class OneCard extends StatefulWidget {
 
 class _OneCardState extends State<OneCard> {
   Game gam = new Game(0);
+  bool tap = false;
+  int counterr = 0;
   int index = 0;
-  String assetimage = "";
   _OneCardState(Game game, int indeks) {
     gam = game;
     index = indeks;
@@ -40,12 +41,20 @@ class _OneCardState extends State<OneCard> {
       child: Card(
         child: GestureDetector(
           child: Container(
-            child: ImageIcon(AssetImage(setasset())),
+            child: counterr == 1 ? ImageIcon(AssetImage(setasset())) : Text(""),
           ),
-          onTap: () {
-            gam.counter += 1;
-            setState(() {});
-          },
+          onTap: tap
+              ? null
+              : () {
+                  setState(() {
+                    gam.list[index] = gam.counter % 2 + 1;
+                    tap = true;
+                    gam.counter += 1;
+                    counterr++;
+                    print(gam.list);
+                    if (gam.win != 0) {}
+                  });
+                },
         ),
       ),
     );
