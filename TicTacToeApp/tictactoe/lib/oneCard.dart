@@ -7,7 +7,7 @@ class OneCard extends StatefulWidget {
   int index = 0;
   OneCard.second(int indeks, Game gam) {
     this.game = gam;
-    index = indeks;
+    this.index = indeks;
   }
 
   @override
@@ -16,12 +16,11 @@ class OneCard extends StatefulWidget {
 
 class _OneCardState extends State<OneCard> {
   Game gam = new Game(0);
-  bool tap = false;
   int counterr = 0;
   int index = 0;
   _OneCardState(Game game, int indeks) {
-    gam = game;
-    index = indeks;
+    this.gam = game;
+    this.index = indeks;
   }
   String setasset() {
     String result;
@@ -43,17 +42,37 @@ class _OneCardState extends State<OneCard> {
           child: Container(
             child: counterr == 1 ? ImageIcon(AssetImage(setasset())) : Text(""),
           ),
-          onTap: tap
+          onTap: gam.listOfButtons[index]
               ? null
               : () {
                   setState(() {
                     gam.list[index] = gam.counter % 2 + 1;
-                    tap = true;
+                    print(gam.listOfButtons[index]);
+                    gam.listOfButtons[index] = true;
+                    print(gam.listOfButtons[index]);
                     gam.counter += 1;
                     counterr++;
                     print(gam.list);
-                    if (gam.win != 0) {}
+                    int result = gam.win();
+                    if (result != 0) {
+                      print(gam.listOfButtons);
+                      showModalBottomSheet(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Container(
+                              decoration: BoxDecoration(
+                                color: Colors.amber,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5)),
+                              ),
+                            );
+                          });
+                    }
                   });
+                  gam.win();
                 },
         ),
       ),
