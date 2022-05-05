@@ -1,0 +1,68 @@
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:camera/camera.dart';
+import 'package:flutter/material.dart';
+import 'package:image/image.dart' as imglib;
+
+late List<CameraDescription> cameras;
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  cameras = await availableCameras();
+  runApp(CameraApp());
+}
+
+class CameraApp extends StatefulWidget {
+  @override
+  _CameraAppState createState() => _CameraAppState();
+}
+
+class _CameraAppState extends State<CameraApp> {
+  late CameraController controller;
+  bool _isDetecting = false;
+  late List<Plane> planes;
+  @override
+  void initState() {
+    super.initState();
+    controller = CameraController(cameras[0], ResolutionPreset.max);
+    controller.initialize().then((_) {
+      if (!mounted) {
+        return;
+      }
+      frames();
+      setState(() {});
+    });
+  }
+
+  void frames() {
+    controller.startImageStream((CameraImage image) {
+      if (_isDetecting) return;
+      _isDetecting = true;
+      try {
+        sleep(Duration(milliseconds: 16));
+        planes = image.planes;
+        print(planes[0].bytes);
+      } catch (e) {
+        // await handleExepction(e)
+      } finally {
+        _isDetecting = false;
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (!controller.value.isInitialized) {
+      return Container();
+    }
+    return MaterialApp(home: Container());
+  }
+}
