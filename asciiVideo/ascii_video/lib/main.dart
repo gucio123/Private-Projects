@@ -23,6 +23,7 @@ class _CameraAppState extends State<CameraApp> {
   late CameraController controller;
   bool _isDetecting = false;
   late List<Plane> planes;
+  int counter = 0;
   @override
   void initState() {
     super.initState();
@@ -36,7 +37,11 @@ class _CameraAppState extends State<CameraApp> {
     });
   }
 
+  @override
+  void setState(VoidCallback fn) {}
+
   void frames() {
+    counter++;
     controller.startImageStream((CameraImage image) {
       if (_isDetecting) return;
       _isDetecting = true;
@@ -50,6 +55,7 @@ class _CameraAppState extends State<CameraApp> {
         _isDetecting = false;
       }
     });
+    print("dupa");
   }
 
   @override
@@ -60,9 +66,18 @@ class _CameraAppState extends State<CameraApp> {
 
   @override
   Widget build(BuildContext context) {
+    // double width = MediaQuery.of(context).size.width;
+    // double height = MediaQuery.of(context).size.height;
     if (!controller.value.isInitialized) {
       return Container();
     }
-    return MaterialApp(home: Container());
+    return MaterialApp(
+      home: Container(
+        child: Text(
+          String.fromCharCode(counter),
+        ),
+        color: Colors.amber,
+      ),
+    );
   }
 }
