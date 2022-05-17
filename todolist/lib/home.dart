@@ -29,14 +29,19 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    Timer.periodic(Duration(milliseconds: 10), (Timer t) => checkTime());
+    Timer.periodic(Duration(milliseconds: 700), (Timer t) => checkTime());
   }
 
   void checkTime() {
     for (int i = 0; i < nowaLista.lista.length; i++) {
       DateTime time = new DateTime.now();
       time.toLocal();
-      if (time.isAtSameMomentAs(nowaLista.lista[i].date)) print("dupa");
+      if (time.year == nowaLista.lista[i].date.year &&
+          time.month == nowaLista.lista[i].date.month &&
+          time.day == nowaLista.lista[i].date.day &&
+          time.hour == nowaLista.lista[i].date.hour &&
+          time.minute == nowaLista.lista[i].date.minute &&
+          time.second == 0) print(time.minute);
     }
   }
 
