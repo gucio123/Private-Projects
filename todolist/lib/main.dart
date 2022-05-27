@@ -3,6 +3,9 @@ import 'home.dart';
 import 'package:flutter/src/rendering/box.dart';
 
 void main() {
+    WidgetsFlutterBinding.ensureInitialized();
+  await NotificationService().init(); // 
+  await NotificationService().requestIOSPermissions(); //
   runApp(MyApp());
 }
 

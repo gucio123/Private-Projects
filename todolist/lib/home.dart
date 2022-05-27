@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:todolist/list.dart';
+import 'package:todolist/task.dart';
 import 'list.dart';
 import 'package:flutter/src/rendering/box.dart';
 
@@ -26,6 +29,20 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+    Timer.periodic(Duration(milliseconds: 700), (Timer t) => checkTime());
+  }
+
+  void checkTime() {
+    for (int i = 0; i < nowaLista.lista.length; i++) {
+      DateTime time = new DateTime.now();
+      time.toLocal();
+      if (time.year == nowaLista.lista[i].date.year &&
+          time.month == nowaLista.lista[i].date.month &&
+          time.day == nowaLista.lista[i].date.day &&
+          time.hour == nowaLista.lista[i].date.hour &&
+          time.minute == nowaLista.lista[i].date.minute &&
+          time.second == 0) print(time.minute);
+    }
   }
 
   void checkIfDone(List lista) {
@@ -39,6 +56,10 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    late DateTime date;
+    late TimeOfDay hour;
     return Scaffold(
       backgroundColor: Colors.grey.shade800,
       floatingActionButton: new FloatingActionButton(
@@ -56,9 +77,33 @@ class _HomeState extends State<Home> {
                       controller: myController,
                     ),
                     RaisedButton(
+                        child: Text("Wybierz datę"),
+                        onPressed: (() {
+                          showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(2022),
+                                  lastDate: DateTime(2024))
+                              .then((value) => {date = value!});
+                        })),
+                    RaisedButton(
+                        child: Text("Wybierz godzinę"),
+                        onPressed: (() {
+                          showTimePicker(
+                                  context: context,
+                                  initialTime: TimeOfDay.now())
+                              .then((value) => {hour = value!});
+                        })),
+                    RaisedButton(
                         child: Text("Dodaj"),
                         onPressed: () {
-                          nowaLista.lista.add(myController.text);
+                          nowaLista.lista.add(new Task(
+                              myController.text,
+                              date.year,
+                              date.month,
+                              date.day,
+                              hour.hour,
+                              hour.minute));
                           nowaLista.listabool.add(false);
                           setState(() {});
                           myController.clear();
@@ -74,7 +119,6 @@ class _HomeState extends State<Home> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       appBar: AppBar(
-        titleSpacing: 50,
         iconTheme: IconThemeData(),
         title: Text(
           "Zobacz co masz do zrobienia!",
@@ -96,15 +140,15 @@ class _HomeState extends State<Home> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Container(
-                            width: 245,
+                            width: width * 0.6,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                SizedBox(
-                                  width: 10,
-                                ),
+                                // SizedBox(
+                                //   width: 10,
+                                // ),
                                 Text(
-                                  nowaLista.lista[index],
+                                  nowaLista.lista[index].description,
                                 ),
                               ],
                             ),

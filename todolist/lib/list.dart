@@ -1,4 +1,6 @@
+import 'package:todolist/task.dart';
+
 class Lista {
-  List lista = <String>[];
+  List lista = <Task>[];
   List listabool = <bool>[];
 }
