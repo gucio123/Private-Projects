@@ -1,20 +1,14 @@
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 public class NumberExercise {
 
     public static int[] restsOfDigits(int number){
         int[] result = {0, 0};
-        System.out.println(number);
         do{
             result[0] += number %10;
             number = number /10;
             result[1] ++;
         }while(number > 0);
         result[0] = result[0] % 3;
-        System.out.print(result[0] + " " + result[1]);
-        System.out.println();
         return result;
     }
     public static int[] digits(int number, int numberOfDigits){
@@ -26,15 +20,8 @@ public class NumberExercise {
         return result;
     }
 
-    public static void print(int[] digits){
-        for(int i = 0; i <  digits.length; i++)
-            System.out.print(digits[i] + " ");
-    }
-
     public static void increment(int[] digits, int rest){
-        System.out.println("Przed increment :" );
-        print(digits);
-        System.out.println();
+
         switch (rest) {
             case 1 :
                 for(int i = 0; i < 2; i++){
@@ -57,15 +44,13 @@ public class NumberExercise {
             default:
                 break;
         }
-        System.out.println("Po increment : ");
-        print(digits);
-        System.out.println();
     }
 
 
 
-    public static void modifyNumbers(int[] numbers) {
+    public static int[] modifyNumbers(int[] numbers) {
         int movesLeft = 6;
+        int[] finalNumbers = new int[3];
         int[][] digitDetails = new int[3][];
         int[][] digits = new int[3][];
         int sumOfRests = 0;
@@ -109,21 +94,26 @@ public class NumberExercise {
                 }
             }
         }
-        for(int j = 0; j <3 ; j++){
-            System.out.println("Po dodatkowym sprawdzeniu");
-            print(digits[j]);
-        }
         int sum = sum(digits);
-        System.out.println(sum);
+        for(int i = 0; i < 3 ; i++)
+            finalNumbers[i] = reconstruction(digits[i]);
 
+        return finalNumbers;
     }
-
+    public static int reconstruction(int[] number){
+        int result = 0;
+        for(int j = 0; j < number.length; j++){
+            int power = (number.length - 1) - j;
+            result += (number[j] * Math.pow(10, power));
+        }
+        return result;
+    }
     public static int sum(int[][] digits){
         int result = 0;
         for(int i = 0; i < 3; i++){
             for(int j = 0; j < digits[i].length; j++){
-               int power = (digits.length) - j;
-               result += digits[i][j] * Math.pow(10, power);
+                int power = (digits[i].length - 1) - j;
+               result += (digits[i][j] * Math.pow(10, power));
             }
         }
         return result;
@@ -135,8 +125,9 @@ public class NumberExercise {
             for(int i = 0; i < 3; i++){
                 numbers[i] = Integer.parseInt(args[i]);
             }
-            NumberExercise.modifyNumbers(numbers);
-
+            int[] finalNumbers = NumberExercise.modifyNumbers(numbers);
+            for(int i = 0; i < 3; i++)
+                System.out.println(finalNumbers[i]);
         }
     }
 }
